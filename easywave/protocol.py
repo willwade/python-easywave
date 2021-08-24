@@ -198,9 +198,13 @@ def create_easywave_connection(port=None, host=None, baud=57600, protocol=Easywa
     )
 
     if not port:
-        usb_port = list(list_ports.grep("Easywave"))[0]
-        port = usb_port.device
-        log.debug('USB port: %s', port)
+        try:
+            usb_port = list(list_ports.grep("Easywave"))[0]
+            port = usb_port.device
+            log.debug('USB port: %s', port)
+        except:
+            log.warning('No USB easywave device found and no port provided')
+            return False
 
     # setup serial connection if no transport specified
     if host:
